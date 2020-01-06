@@ -1,5 +1,5 @@
 ///
-/// Atmosphere by Pixelarity
+/// Phantom by Pixelarity
 /// pixelarity.com | hello@pixelarity.com
 /// License: pixelarity.com/license
 ///
@@ -10,19 +10,10 @@
 		cursor: default;
 		list-style: none;
 		padding-left: 0;
+		margin: -1em 0 _size(element-margin) -1em;
 
 		li {
 			display: inline-block;
-			padding: 0 1em 0 0;
-
-			&:last-child {
-				padding-right: 0;
-			}
-
-			.icon {
-				&:before {
-					font-size: 2em;
-				}
-			}
+			padding: 1em 0 0 1em;
 		}
 	}

@@ -1,5 +1,5 @@
 /*
-	Atmosphere by Pixelarity
+	Phantom by Pixelarity
 	pixelarity.com | hello@pixelarity.com
 	License: pixelarity.com/license
 */
@@ -7,9 +7,7 @@
 (function($) {
 
 	var	$window = $(window),
-		$body = $('body'),
-		$header = $('#header'),
-		$banner = $('#banner');
+		$body = $('body');
 
 	// Breakpoints.
 		breakpoints({
@@ -28,30 +26,73 @@
 			}, 100);
 		});
 
-	// Scrolly.
-		$('.scrolly').scrolly({
-			offset: function() {
-				return $header.height();
-			}
-		});
+	// Touch?
+		if (browser.mobile)
+			$body.addClass('is-touch');
 
-	// Header.
-		if ($banner.length > 0
-		&&	$header.hasClass('alt')) {
+	// Forms.
+		var $form = $('form');
 
-			$window.on('resize', function() { $window.trigger('scroll'); });
+		// Auto-resizing textareas.
+			$form.find('textarea').each(function() {
 
-			$banner.scrollex({
-				bottom:		$header.outerHeight(),
-				terminate:	function() { $header.removeClass('alt'); },
-				enter:		function() { $header.addClass('alt'); },
-				leave:		function() { $header.removeClass('alt'); }
+				var $this = $(this),
+					$wrapper = $('<div class="textarea-wrapper"></div>'),
+					$submits = $this.find('input[type="submit"]');
+
+				$this
+					.wrap($wrapper)
+					.attr('rows', 1)
+					.css('overflow', 'hidden')
+					.css('resize', 'none')
+					.on('keydown', function(event) {
+
+						if (event.keyCode == 13
+						&&	event.ctrlKey) {
+
+							event.preventDefault();
+							event.stopPropagation();
+
+							$(this).blur();
+
+						}
+
+					})
+					.on('blur focus', function() {
+						$this.val($.trim($this.val()));
+					})
+					.on('input blur focus --init', function() {
+
+						$wrapper
+							.css('height', $this.height());
+
+						$this
+							.css('height', 'auto')
+							.css('height', $this.prop('scrollHeight') + 'px');
+
+					})
+					.on('keyup', function(event) {
+
+						if (event.keyCode == 9)
+							$this
+								.select();
+
+					})
+					.triggerHandler('--init');
+
+				// Fix.
+					if (browser.name == 'ie'
+					||	browser.mobile)
+						$this
+							.css('max-height', '10em')
+							.css('overflow-y', 'auto');
+
 			});
-
-		}
 
 	// Menu.
 		var $menu = $('#menu');
+
+		$menu.wrapInner('<div class="inner"></div>');
 
 		$menu._locked = false;
 
@@ -94,43 +135,28 @@
 		$menu
 			.appendTo($body)
 			.on('click', function(event) {
+				event.stopPropagation();
+			})
+			.on('click', 'a', function(event) {
 
+				var href = $(this).attr('href');
+
+				event.preventDefault();
 				event.stopPropagation();
 
 				// Hide.
 					$menu._hide();
 
+				// Redirect.
+					if (href == '#menu')
+						return;
+
+					window.setTimeout(function() {
+						window.location.href = href;
+					}, 350);
+
 			})
-			.find('.inner')
-				.on('click', '.close', function(event) {
-
-					event.preventDefault();
-					event.stopPropagation();
-					event.stopImmediatePropagation();
-
-					// Hide.
-						$menu._hide();
-
-				})
-				.on('click', function(event) {
-					event.stopPropagation();
-				})
-				.on('click', 'a', function(event) {
-
-					var href = $(this).attr('href');
-
-					event.preventDefault();
-					event.stopPropagation();
-
-					// Hide.
-						$menu._hide();
-
-					// Redirect.
-						window.setTimeout(function() {
-							window.location.href = href;
-						}, 350);
-
-				});
+			.append('<a class="close" href="#menu">Close</a>');
 
 		$body
 			.on('click', 'a[href="#menu"]', function(event) {
@@ -142,6 +168,12 @@
 					$menu._toggle();
 
 			})
+			.on('click', function(event) {
+
+				// Hide.
+					$menu._hide();
+
+			})
 			.on('keydown', function(event) {
 
 				// Hide on escape.
@@ -149,6 +181,5 @@
 						$menu._hide();
 
 			});
-
 
 })(jQuery);

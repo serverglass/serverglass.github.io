@@ -1,5 +1,5 @@
 ///
-/// Atmosphere by Pixelarity
+/// Phantom by Pixelarity
 /// pixelarity.com | hello@pixelarity.com
 /// License: pixelarity.com/license
 ///
@@ -7,195 +7,133 @@
 /* Footer */
 
 	#footer {
-		@include vendor('background-image', (
-			'linear-gradient(to top, #{transparentize(_palette(bg-alt), 0.1)}, #{transparentize(_palette(bg-alt), 0.1)})',
-			'url("../../images/banner.jpg")'
-		));
-		background-attachment: fixed;
-		background-position: center center;
-		background-size: cover;
-		padding: 12em 0 2em;
+		$gutter: _size(gutter);
+
+		@include padding(5em, 0, (0, 0, 3em, 0));
+		background-color: _palette(bg-alt);
 
 		> .inner {
 			@include vendor('display', 'flex');
-			margin: 0 auto (_size(element-margin) * 1.5);
-			max-width: 75em;
-			width: calc(100% - 4em);
-		}
+			@include vendor('flex-wrap', 'wrap');
+			@include vendor('flex-direction', 'row');
 
-		.contact {
-			@include padding(4em, 2.5em);
-			background-color: #fff;
-			list-style-type: none;
-			margin-bottom: 0;
-			width: 35%;
-
-			li {
-				margin-bottom: _size(element-margin);
-				padding-bottom: _size(element-margin);
-				padding-left: 4em;
-				position: relative;
-
-				strong {
-					color: _palette(accent1, bg);
-					display: block;
-					margin-bottom: 0.5em;
-					text-transform: uppercase;
-				}
-
-				&.icon:before {
-					color: _palette(border);
-					position: absolute;
-					left: 0;
-					top: 0.25em;
-					font-size: 1.25em;
-				}
-
-				&:after {
-					background-color: _palette(border);
-					bottom: 0;
-					content: '';
-					height: 1px;
-					left: -4em;
-					position: absolute;
-					width: 8em;
-				}
-
-				&:last-child {
-					margin-bottom: 0;
-
-					&:after {
-						display: none;
-					}
-				}
-			}
-		}
-
-		form {
-			@include color(accent1);
-			@include vendor('flex-grow', '1');
-			margin-bottom: 0;
-			padding: 4em 3.5em;
-
-			h4 {
-				font-weight: _font(weight-bold);
-				margin-bottom: _size(element-margin);
-				text-transform: uppercase;
+			> * > :last-child {
+				margin-bottom: 0;
 			}
 
-			label {
-				@include sr-only;
+			section:nth-child(1) {
+				width: calc(66% - #{$gutter});
+				margin-right: $gutter;
 			}
 
-			@include breakpoint('<=medium') {
-				> .fields {
-					$gutter: (_size(element-margin) * 0.75);
-
-					width: calc(100% + #{$gutter * 2});
-					margin: ($gutter * -1) 0 _size(element-margin) ($gutter * -1);
-
-					> .field {
-						padding: $gutter 0 0 $gutter;
-						width: calc(100% - #{$gutter * 1});
-
-						&.half {
-							width: calc(100% - #{$gutter * 1});
-						}
-
-						&.third {
-							width: calc(100% - #{$gutter * 1});
-						}
-
-						&.quarter {
-							width: calc(100% - #{$gutter * 1});
-						}
-					}
-				}
+			section:nth-child(2) {
+				width: calc(33% - #{$gutter});
+				margin-left: $gutter;
 			}
-		}
 
-		.copyright {
-			color: _palette(fg-light);
-			margin-bottom: (_size(element-margin) * 1.5);
-			padding: 0;
-			text-align: center;
-
-			li {
-				border-left: solid _size(border-width) _palette(border);
-				display: inline-block;
+			.copyright {
+				width: 100%;
+				padding: 0;
+				margin-top: 5em;
 				list-style: none;
-				margin-left: 1.5em;
-				padding-left: 1.5em;
+				font-size: 0.8em;
+				color: transparentize(_palette(fg), 0.5);
 
-				&:first-child {
-					border-left: 0;
-					margin-left: 0;
-					padding-left: 0;
+				a {
+					color: inherit;
+				}
+
+				li {
+					display: inline-block;
+					border-left: solid 1px transparentize(_palette(fg), 0.85);
+					line-height: 1;
+					padding: 0 0 0 1em;
+					margin: 0 0 0 1em;
+
+					&:first-child {
+						border-left: 0;
+						padding-left: 0;
+						margin-left: 0;
+					}
 				}
 			}
 		}
 
 		@include breakpoint('<=large') {
-			background-attachment: scroll;
+			$gutter: _size(gutter) * 0.5;
+
+			@include padding(5em, 0);
+
+			> .inner {
+				section:nth-child(1) {
+					width: calc(66% - #{$gutter});
+					margin-right: $gutter;
+				}
+
+				section:nth-child(2) {
+					width: calc(33% - #{$gutter});
+					margin-left: $gutter;
+				}
+			}
 		}
 
 		@include breakpoint('<=medium') {
-			padding-top: 10em;
+			$gutter: _size(gutter);
 
-			.contact {
-				@include padding(2em, 2em);
-				width: 45%;
-
-				li {
-					padding-left: 3em;
+			> .inner {
+				section:nth-child(1) {
+					width: 66%;
+					margin-right: 0;
 				}
-			}
 
-			form {
-				padding: 2em 2em;
-				width: 55%;
+				section:nth-child(2) {
+					width: calc(33% - #{$gutter});
+					margin-left: $gutter;
+				}
 			}
 		}
 
 		@include breakpoint('<=small') {
-			padding-top: 7em;
+			@include padding(3em, 0);
 
 			> .inner {
-				@include vendor('flex-wrap', 'wrap');
-				width: calc(100% - 3em);
-			}
+				@include vendor('flex-direction', 'column');
 
-			.contact {
-				width: 100%;
-			}
+				section:nth-child(1) {
+					width: 100%;
+					margin-right: 0;
+					margin: 3em 0 0 0;
+				}
 
-			form {
-				width: 100%;
-			}
-
-			.copyright {
-				margin-bottom: _size(element-margin);
-
-				li {
-					display: block;
-					border-left: 0;
+				section:nth-child(2) {
+					@include vendor('order', '-1');
+					width: 100%;
 					margin-left: 0;
-					padding-left: 0;
+				}
+
+				.copyright {
+					margin-top: 3em;
 				}
 			}
 		}
 
 		@include breakpoint('<=xsmall') {
-			.contact {
-				@include padding(2em, 1.5em);
+			> .inner {
+				.copyright {
+					margin-top: 3em;
 
-				li {
-					padding-left: 2.5em;
+					li {
+						border-left: 0;
+						padding-left: 0;
+						margin: 0.75em 0 0 0;
+						display: block;
+						line-height: inherit;
+
+						&:first-child {
+							margin-top: 0;
+						}
+					}
 				}
-			}
-
-			form {
-				padding: 2em 1.5em;
 			}
 		}
 	}
